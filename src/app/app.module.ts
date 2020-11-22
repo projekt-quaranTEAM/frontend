@@ -10,14 +10,22 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarHeaderModule } from '../angular-calendar-demos/calendar-header/calendar-header.module';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import { SuggestionListComponent } from './components/suggestion-list/suggestion-list.component';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, CalendarComponent, NavBarComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    CalendarComponent,
+    NavBarComponent,
+    SuggestionsComponent,
+    SuggestionListComponent,
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -32,8 +40,9 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     FormsModule,
     NgbModalModule,
     FlatpickrModule.forRoot(),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
