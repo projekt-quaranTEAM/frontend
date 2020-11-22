@@ -10,8 +10,12 @@
     "e2e": "ng e2e"
   },
   "private": true,
+  "styles": [
+    "styles.css",
+    "node_modules/ngx-toastr/toastr.css"
+  ],
   "dependencies": {
-    "@angular/animations": "~10.1.6",
+    "@angular/animations": "^10.1.6",
     "@angular/cdk": "^10.2.6",
     "@angular/common": "~10.1.6",
     "@angular/compiler": "~10.1.6",
@@ -27,6 +31,7 @@
     "bootstrap": "^4.5.3",
     "date-fns": "^2.16.1",
     "flatpickr": "^4.6.6",
+    "ngx-toastr": "^13.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

@@ -17,6 +17,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { SuggestionListComponent } from './components/suggestion-list/suggestion-list.component';
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +43,7 @@ import { SuggestionListComponent } from './components/suggestion-list/suggestion
     NgbModalModule,
     FlatpickrModule.forRoot(),
     NgbModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
