@@ -1,3 +1,8 @@
+<link href="https://unpkg.com/bootstrap-css-only@4.4.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://unpkg.com/@fortawesome/fontawesome-free@5.15.1/css/all.css" rel="stylesheet">
+<link href="https://unpkg.com/angular-calendar@0.28.22/css/angular-calendar.css" rel="stylesheet">
+<link href="https://unpkg.com/flatpickr@4.6.6/dist/flatpickr.css" rel="stylesheet">
+
 <!-- header part -->
 <mwl-demo-utils-calendar-header [(view)]="view" [(viewDate)]="viewDate">
 </mwl-demo-utils-calendar-header>
@@ -10,8 +15,9 @@
     [events]="events"
     [refresh]="refresh"
     [activeDayIsOpen]="activeDayIsOpen"
+    [weekStartsOn]="weekStartsOn"
     (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
+    (eventClicked)="showEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
   </mwl-calendar-month-view>
@@ -20,7 +26,8 @@
     [viewDate]="viewDate"
     [events]="events"
     [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
+    [weekStartsOn]="weekStartsOn"
+    (eventClicked)="showEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
   </mwl-calendar-week-view>
@@ -29,7 +36,7 @@
     [viewDate]="viewDate"
     [events]="events"
     [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
+    (eventClicked)="showEvent('Clicked', $event.event)"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
   </mwl-calendar-day-view>
@@ -38,15 +45,15 @@
 <br /><br /><br />
 
 <!-- edit events section -->
-<!-- <h3>
-  Edit events
-  <button class="btn btn-primary float-right" (click)="addEvent()">
-    Add new
+<h3>
+  <button class="btn btn-primary add-btn" (click)="createNewEvent()">
+    Add new event
   </button>
   <div class="clearfix"></div>
 </h3>
 
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="tempEvent">
+  <h3>Event</h3>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -56,30 +63,32 @@
         <th>Starts at</th>
         <th>Ends at</th>
         <th>Remove</th>
+        <th *ngIf="clickedEdit">Cancel</th>
+        <th>Submit</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let event of events">
+      <tr>
         <td>
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="event.title"
+            [(ngModel)]="tempEvent.title"
             (keyup)="refresh.next()"
           />
         </td>
         <td>
           <input
             type="color"
-            [(ngModel)]="event.color.primary"
+            [(ngModel)]="tempEvent.color.primary"
             (change)="refresh.next()"
           />
         </td>
         <td>
           <input
             type="color"
-            [(ngModel)]="event.color.secondary"
+            [(ngModel)]="tempEvent.color.secondary"
             (change)="refresh.next()"
           />
         </td>
@@ -88,9 +97,10 @@
             class="form-control"
             type="text"
             mwlFlatpickr
-            [(ngModel)]="event.start"
+            [(ngModel)]="tempEvent.start"
             (ngModelChange)="refresh.next()"
             [altInput]="true"
+            [time24hr] = 'true'
             [convertModelValue]="true"
             [enableTime]="true"
             dateFormat="Y-m-dTH:i"
@@ -103,9 +113,10 @@
             class="form-control"
             type="text"
             mwlFlatpickr
-            [(ngModel)]="event.end"
+            [(ngModel)]="tempEvent.end"
             (ngModelChange)="refresh.next()"
             [altInput]="true"
+            [time24hr] = 'true'
             [convertModelValue]="true"
             [enableTime]="true"
             dateFormat="Y-m-dTH:i"
@@ -114,14 +125,24 @@
           />
         </td>
         <td>
-          <button class="btn btn-danger" (click)="deleteEvent(event)">
-            Delete
+          <button class="btn btn-danger" (click)="deleteEvent(tempEvent)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+        <td *ngIf="clickedEdit" (click)="cancelEdit(tempEvent)">
+          <button class="btn btn-warning">
+            <i class="fas fa-undo"></i>
+          </button>
+        </td>        
+        <td> 
+          <button class="btn btn-success" (click)="addEvent()">
+            <i class="fas fa-check"></i>
           </button>
         </td>
       </tr>
     </tbody>
   </table>
-</div> -->
+</div>
 <!-- opening modal with info what happened -->
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
@@ -146,3 +167,48 @@
     </button>
   </div>
 </ng-template>
+
+
+<!-- noteView -->
+<ng-template #noteView let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modalData?.event.title }}</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <textarea class='note-text' placeholder="Enter a note..."></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      OK
+    </button>
+  </div>
+</ng-template>
+
+<!-- eventView -->
+<ng-template #eventView let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modalData?.event.title}}</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="event-body modal-body">
+    <div>
+      Start:
+      <pre>{{ modalData?.event.start.toLocaleString()}}</pre>
+    </div>
+    <div>
+      End:
+      <pre>{{ modalData?.event.end.toLocaleString()}}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      OK
+    </button>
+  </div>
+</ng-template>
+

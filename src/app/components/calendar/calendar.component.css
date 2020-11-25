@@ -1,8 +1,41 @@
 h3 {
   margin: 0 0 10px;
+  font-size: 30px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 pre {
+  font-size: 20px;
   background-color: #f5f5f5;
   padding: 15px;
+}
+
+.btn-success,
+.btn-danger,
+.btn-warning {
+  font-size: 25px;
+  border-radius: 100%;
+}
+
+.table {
+  text-align: center;
+}
+
+.add-btn {
+  margin-bottom: 10px;
+}
+
+.modal-title {
+  font-size: 35px;
+  margin-top: 10px;
+}
+
+.note-text {
+  width: 100%;
+  font-size: 20px;
+  min-height: 200px;
+  border: 0 none;
+  padding: 0;
+  outline: none;
+  background-color: #f5f5f5;
 }

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
+  EventEmitter,
 } from '@angular/core';
 import {
   startOfDay,
@@ -21,7 +22,13 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  DAYS_OF_WEEK,
 } from 'angular-calendar';
+import flatpickr from "flatpickr"
+import { PlannerService } from 'src/app/services/planner.service';
+
+
+flatpickr.l10ns.default.firstDayOfWeek = 1;
 
 const colors: any = {
   red: {
@@ -47,7 +54,13 @@ const colors: any = {
 export class CalendarComponent {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
+  @ViewChild('noteView', { static: true }) noteView: TemplateRef<any>;
+
+  @ViewChild('eventView', { static: true }) eventView: TemplateRef<any>;
+
   view: CalendarView = CalendarView.Month;
+
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
   CalendarView = CalendarView;
 
@@ -63,20 +76,30 @@ export class CalendarComponent {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
+        this.clickedEdit = true;
+        this.oldEvent = { ...event };
+        this.tempEvent = event;
       },
     },
     {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
+      label: '<i class="fas fa-fw fa-clipboard"></i>',
+      a11yLabel: 'Note',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        // this.events = this.events.filter((iEvent) => iEvent !== event);
+        // if (event == this.tempEvent) this.tempEvent = null
+        this.noteEvent('Note', event);
+
       },
     },
   ];
 
   refresh: Subject<any> = new Subject();
+
+  tempEvent: CalendarEvent;
+
+  oldEvent: CalendarEvent;
+
+  clickedEdit: boolean = false;
 
   events: CalendarEvent[] = [
     {
@@ -121,9 +144,11 @@ export class CalendarComponent {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
+  constructor(private modal: NgbModal, private plannerService: PlannerService) { }
+
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    this.tempEvent = null;
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -142,6 +167,7 @@ export class CalendarComponent {
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
+    this.tempEvent = null;
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
@@ -152,7 +178,7 @@ export class CalendarComponent {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    // this.handleEvent('Dropped or resized', event);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -160,25 +186,53 @@ export class CalendarComponent {
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
+  noteEvent(action: string, event: CalendarEvent): void {
+    this.modalData = { event, action };
+    this.modal.open(this.noteView, { size: 'lg' });
+  }
+
+  showEvent(action: string, event: CalendarEvent): void {
+    this.modalData = { event, action };
+    this.modal.open(this.eventView, { size: 'lg' });
+  }
+
   addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
+    if (this.clickedEdit == false) {
+      this.events = [...this.events, this.tempEvent];
+    }
+    var json = JSON.stringify({ start: this.tempEvent.start, end: this.tempEvent.end, title: this.tempEvent.title, color: this.tempEvent.color, userid: 3, noteid: 1 })
+    this.plannerService.sendPostRequest(json.toString());
+
+    this.tempEvent = null;
+    this.clickedEdit = false;
+  }
+
+  createNewEvent(): void {
+    this.clickedEdit = false;
+    this.tempEvent = {
+      title: 'New event',
+      start: startOfDay(new Date()),
+      end: endOfDay(new Date()),
+      color: colors.red,
+      actions: this.actions,
+      draggable: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true,
+      }
+    }
+  }
+
+  cancelEdit(): void {
+    this.tempEvent = Object.assign(this.tempEvent, this.oldEvent);
+    this.tempEvent = null;
+    this.refresh.next();
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
+    this.tempEvent = null;
+    this.clickedEdit = false;
   }
 
   setView(view: CalendarView) {
