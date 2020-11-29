@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { EventObj } from '../models/EventObj';
 import { CalendarEvent } from 'angular-calendar';
+import { Proposition } from '../models/Proposition';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { CalendarEvent } from 'angular-calendar';
 export class PlannerService {
   private url = 'http://localhost:8080/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   public getEvents() {
     return this.httpClient.get<EventObj[]>(this.url + 'events');
@@ -52,7 +53,18 @@ export class PlannerService {
         'Content-Type': 'application/json',
       }),
     };
-    return this.httpClient
-      .delete(this.url + 'event/' + event.id, httpOptions);
+    return this.httpClient.delete(this.url + 'event/' + event.id, httpOptions);
+  }
+
+  public getPropositions() {
+    const headersObject = new HttpHeaders();
+    headersObject.append('Access-Control-Allow-Origin', '*');
+    headersObject.append(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS'
+    );
+    return this.httpClient.get<Proposition[]>(this.url + 'proposition', {
+      headers: headersObject,
+    });
   }
 }

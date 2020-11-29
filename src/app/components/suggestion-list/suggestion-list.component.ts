@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { PlannerService } from 'src/app/services/planner.service';
 
 @Component({
   selector: 'app-suggestion-list',
@@ -9,7 +10,10 @@ import { ToastrService } from 'ngx-toastr';
 export class SuggestionListComponent implements OnInit {
   @Input()
   suggestionList;
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private toastr: ToastrService,
+    private plannerService: PlannerService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -17,5 +21,6 @@ export class SuggestionListComponent implements OnInit {
     console.log('click!', event);
     console.log(this.suggestionList[ind]);
     this.toastr.success('Hello world!', 'Toastr fun!');
+    this.plannerService.saveEvent(this.suggestionList[ind].calendarEvent);
   }
 }

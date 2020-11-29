@@ -2,13 +2,13 @@
   <div *ngFor="let suggest of suggestionList; let i = index">
     <div class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ suggest.title }}</h5>
-        <small>{{ suggest.time }}</small>
+        <h5 class="mb-1">{{ suggest.calendarEvent.title }}</h5>
+        <small>{{ suggest.calendarEvent.start }}</small>
       </div>
       <p class="mb-1">
-        {{ suggest.desc1 }}
+        {{ suggest.link }}
       </p>
-      <small>{{ suggest.desc2 }}</small>
+      <small>{{ suggest.category }}</small>
       <button
         type="button"
         class="btn btn-primary btn-sm float-right"

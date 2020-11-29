@@ -2,17 +2,24 @@
 
 <ul ngbNav #nav="ngbNav" class="nav-tabs">
   <li ngbNavItem>
-    <a ngbNavLink>First</a>
+    <a ngbNavLink>Sport</a>
     <ng-template ngbNavContent
       ><app-suggestion-list
-        [suggestionList]="suggestionListFirst"
+        [suggestionList]="suggestionListSport"
       ></app-suggestion-list
     ></ng-template>
   </li>
   <li ngbNavItem>
-    <a ngbNavLink>Second</a>
+    <a ngbNavLink>Games</a>
     <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListSecond">
+      ><app-suggestion-list [suggestionList]="suggestionListGames">
+      </app-suggestion-list
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Music</a>
+    <ng-template ngbNavContent
+      ><app-suggestion-list [suggestionList]="suggestionListMusic">
       </app-suggestion-list
     ></ng-template>
   </li>

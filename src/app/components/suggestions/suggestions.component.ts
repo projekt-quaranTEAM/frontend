@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PlannerService } from 'src/app/services/planner.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -6,62 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./suggestions.component.css'],
 })
 export class SuggestionsComponent implements OnInit {
-  suggestionListFirst: any[] = [
-    {
-      title: 'List group item heading',
-      time: '3 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-    {
-      title: 'List group item heading',
-      time: '3 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-    {
-      title: 'List group item heading',
-      time: '3 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-    {
-      title: 'List group item heading',
-      time: '3 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-  ];
+  suggestionListSport: any[] = [];
+  suggestionListMusic: any[] = [];
+  suggestionListGames: any[] = [];
 
-  suggestionListSecond: any[] = [
-    {
-      title: 'List group item heading',
-      time: '4 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-    {
-      title: 'List group item heading',
-      time: '4 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-    {
-      title: 'List group item heading',
-      time: '4 days ago',
-      desc1:
-        'Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.',
-      desc2: 'Donec id elit non mi porta.',
-    },
-  ];
+  constructor(private plannerService: PlannerService) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.plannerService.getPropositions().subscribe((data) => {
+      console.log(data);
+      this.suggestionListSport = data.filter(
+        (item) => item.category === 'sport'
+      );
+      this.suggestionListMusic = data.filter(
+        (item) => item.category === 'music'
+      );
+      this.suggestionListGames = data.filter(
+        (item) => item.category === 'games'
+      );
+    });
+  }
 }
