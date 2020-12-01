@@ -20,7 +20,12 @@ export class SuggestionListComponent implements OnInit {
   handleClick(event: Event, ind: number): void {
     console.log('click!', event);
     console.log(this.suggestionList[ind]);
-    this.toastr.success('Hello world!', 'Toastr fun!');
-    this.plannerService.saveEvent(this.suggestionList[ind].calendarEvent);
+    this.toastr.success(
+      this.suggestionList[ind].calendarEvent.title,
+      'Added to calendar'
+    );
+    this.plannerService
+      .saveProposition(this.suggestionList[ind])
+      .subscribe((data) => console.log(data));
   }
 }

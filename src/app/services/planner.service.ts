@@ -34,6 +34,15 @@ export class PlannerService {
       });
   }
 
+  public saveProposition(body: Proposition) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.httpClient.post(this.url + 'event', body, httpOptions);
+  }
+
   public updateEvent(body: EventObj) {
     const httpOptions = {
       headers: new HttpHeaders({
