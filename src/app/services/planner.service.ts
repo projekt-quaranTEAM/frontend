@@ -11,7 +11,7 @@ import { Proposition } from '../models/Proposition';
 export class PlannerService {
   private url = 'http://localhost:8080/';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   public getEvents() {
     return this.httpClient.get<EventObj[]>(this.url + 'events');
@@ -28,10 +28,7 @@ export class PlannerService {
       }),
     };
     return this.httpClient
-      .post(this.url + 'event', body, httpOptions)
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .post(this.url + 'event', body, httpOptions);
   }
 
   public saveProposition(body: Proposition) {
@@ -50,10 +47,7 @@ export class PlannerService {
       }),
     };
     return this.httpClient
-      .put(this.url + 'event/' + body.calendarEvent.id, body, httpOptions)
-      .subscribe((data) => {
-        console.log(data);
-      });
+      .put(this.url + 'event/' + body.calendarEvent.id, body, httpOptions);
   }
 
   public deleteEvent(event: CalendarEvent) {

@@ -106,23 +106,24 @@ export class CalendarComponent implements OnInit {
     this.plannerService.getEvents().subscribe((data) => {
       console.log(data);
       this.events = data;
+      this.mapedEvents = [];
       if (this.events) {
         // tslint:disable-next-line:prefer-const
         for (let item of Object.keys(this.events)) {
           // tslint:disable-next-line:prefer-const
           let eventItem = this.events[item];
-          eventItem.calendarEvent.start = new Date(
-            eventItem.calendarEvent.start
-          );
+
+          eventItem.calendarEvent.start = new Date(eventItem.calendarEvent.start);
           eventItem.calendarEvent.end = new Date(eventItem.calendarEvent.end);
           eventItem.calendarEvent.actions = this.actions;
 
           this.mapedEvents.push(eventItem.calendarEvent);
-          this.refresh.next();
         }
       }
+      this.refresh.next();
     });
   }
+
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     this.tempEvent = null;
@@ -167,7 +168,6 @@ export class CalendarComponent implements OnInit {
     this.modalData = { event, action };
     this.modal.open(this.eventView, { size: 'lg' });
   }
-
   addEvent(): void {
 
     this.eventObjToSend = {
@@ -177,15 +177,17 @@ export class CalendarComponent implements OnInit {
     };
 
     if (this.clickedEdit === false) {
-      this.mapedEvents.push(this.tempEvent);
-      this.plannerService.saveEvent(this.eventObjToSend);
+      this.plannerService.saveEvent(this.eventObjToSend).subscribe(() => {
+        this.updateEventsList();
+      });
     } else {
-      this.plannerService.updateEvent(this.eventObjToSend);
+      this.plannerService.updateEvent(this.eventObjToSend).subscribe(() => {
+        this.updateEventsList();
+      });
     }
-
     this.tempEvent = null;
     this.clickedEdit = false;
-    this.refresh.next();
+    this.updateEventsList();
   }
 
   createNewEvent(): void {
