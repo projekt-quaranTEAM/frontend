@@ -174,6 +174,7 @@ export class CalendarComponent implements OnInit {
       id: 1,
       calendarEvent: this.tempEvent,
       userID: 1,
+      link: "",
     };
 
     if (this.clickedEdit === false) {

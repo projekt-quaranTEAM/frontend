@@ -4,4 +4,5 @@ export class EventObj {
   id?: number;
   calendarEvent: CalendarEvent;
   userID: number;
+  link: string
 }
