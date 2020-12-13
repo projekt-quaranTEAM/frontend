@@ -10,8 +10,9 @@ export class SuggestionsComponent implements OnInit {
   suggestionListSport: any[] = [];
   suggestionListMusic: any[] = [];
   suggestionListGames: any[] = [];
+  suggestionListSelected: any[] = [];
 
-  constructor(private plannerService: PlannerService) {}
+  constructor(private plannerService: PlannerService) { }
 
   ngOnInit(): void {
     this.plannerService.getPropositions().subscribe((data) => {

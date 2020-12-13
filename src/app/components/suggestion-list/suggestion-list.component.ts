@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Proposition } from 'src/app/models/Proposition';
 import { PlannerService } from 'src/app/services/planner.service';
 
 @Component({
@@ -13,19 +14,17 @@ export class SuggestionListComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private plannerService: PlannerService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  handleClick(event: Event, ind: number): void {
-    console.log('click!', event);
-    console.log(this.suggestionList[ind]);
+  handleClick(propositon: Proposition): void {
     this.toastr.success(
-      this.suggestionList[ind].calendarEvent.title,
+      propositon.calendarEvent.title,
       'Added to calendar'
     );
     this.plannerService
-      .saveProposition(this.suggestionList[ind])
-      .subscribe((data) => console.log(data));
+      .saveProposition(propositon)
+      .subscribe();
   }
 }

@@ -1,19 +1,18 @@
 <div class="list-group">
-  <div *ngFor="let suggest of suggestionList; let i = index">
+  <div *ngFor="let suggest of suggestionList">
     <div class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ suggest.calendarEvent.title }}</h5>
-        <small>{{ suggest.calendarEvent.start }}</small>
+        <h3 class="mb-1 font-weight-bold">{{ suggest.calendarEvent.title }}</h3>
+        <small>{{ suggest.calendarEvent.start | date:'medium' }}</small>
       </div>
       <p class="mb-1">
-        {{ suggest.link }}
+        <a href="{{ suggest.link }}">{{ suggest.link }}</a>
       </p>
-      <small>{{ suggest.category }}</small>
+      <small class="text-capitalize">{{ suggest.category }}</small>
       <button
         type="button"
         class="btn btn-primary btn-sm float-right"
-        (click)="handleClick($event, i)"
-      >
+        (click)="handleClick(suggest)">
         Add to calendar
       </button>
     </div>

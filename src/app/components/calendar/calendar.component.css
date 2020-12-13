@@ -26,6 +26,7 @@ pre {
 }
 
 .modal-title {
-  font-size: 35px;
+  font-size: 30px;
+  line-height: 120%;
   margin-top: 10px;
 }

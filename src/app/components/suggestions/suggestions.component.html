@@ -4,8 +4,7 @@
   <li ngbNavItem>
     <a ngbNavLink>Sport</a>
     <ng-template ngbNavContent
-      ><app-suggestion-list
-        [suggestionList]="suggestionListSport"
+      ><app-suggestion-list [suggestionList]="suggestionListSport"
       ></app-suggestion-list
     ></ng-template>
   </li>
@@ -20,6 +19,13 @@
     <a ngbNavLink>Music</a>
     <ng-template ngbNavContent
       ><app-suggestion-list [suggestionList]="suggestionListMusic">
+      </app-suggestion-list
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Selected for You</a>
+    <ng-template ngbNavContent
+      ><app-suggestion-list [suggestionList]="suggestionListSelected">
       </app-suggestion-list
     ></ng-template>
   </li>
