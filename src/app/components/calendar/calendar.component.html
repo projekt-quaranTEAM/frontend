@@ -133,6 +133,10 @@
       End:
       <pre>{{ modalData?.event.end.toLocaleString() }}</pre>
     </div>
+    <div *ngIf="modalData?.link">
+      Link:
+      <pre><a href="{{modalData?.link}}">{{modalData?.link}}</a></pre>
+    </div>
   </div>
   <div class="table-responsive" *ngIf="tempEvent"></div>
   <div class="modal-footer">

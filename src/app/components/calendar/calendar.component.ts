@@ -62,6 +62,7 @@ export class CalendarComponent implements OnInit {
   modalData: {
     action: string;
     event: CalendarEvent;
+    link?: string;
   };
 
   actions: CalendarEventAction[] = [
@@ -165,7 +166,8 @@ export class CalendarComponent implements OnInit {
   }
 
   showEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
+    const link = this.events.filter(e => e.calendarEvent.id == event.id)[0].link;
+    this.modalData = { event, action, link };
     this.modal.open(this.eventView, { size: 'lg' });
   }
   addEvent(): void {

@@ -16,7 +16,6 @@ export class SuggestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.plannerService.getPropositions().subscribe((data) => {
-      //console.log(data);
       this.suggestionListSport = data.filter(
         (item) => item.category === 'sport'
       );
@@ -29,22 +28,19 @@ export class SuggestionsComponent implements OnInit {
 
       var c = 0
       for (let item of data) {
-       c++
-        if(item.category === "SPECIAL FOR YOU") {
-          console.log(item.category);
+        c++
+        if (item.category === "SPECIAL FOR YOU") {
           c++
           break
-        }        
+        }
       }
-      console.log(c)
       var counter = 0
       for (let item of data) {
-        console.log(item)
         counter++
-        if(counter >= c) {
-          this.suggestionListSelected.push(item) 
+        if (counter >= c) {
+          this.suggestionListSelected.push(item)
         }
-      
+
       }
     });
   }
