@@ -12,7 +12,7 @@ export class SuggestionsComponent implements OnInit {
   suggestionListGames: any[] = [];
   suggestionListSelected: any[] = [];
 
-  constructor(private plannerService: PlannerService) { }
+  constructor(private plannerService: PlannerService) {}
 
   ngOnInit(): void {
     this.plannerService.getPropositions().subscribe((data) => {
@@ -26,21 +26,20 @@ export class SuggestionsComponent implements OnInit {
         (item) => item.category === 'games'
       );
 
-      var c = 0
+      var c = 0;
       for (let item of data) {
-        c++
-        if (item.category === "SPECIAL FOR YOU") {
-          c++
-          break
+        c++;
+        if (item.category === 'SPECIAL FOR YOU') {
+          c++;
+          break;
         }
       }
-      var counter = 0
+      var counter = 0;
       for (let item of data) {
-        counter++
+        counter++;
         if (counter >= c) {
-          this.suggestionListSelected.push(item)
+          this.suggestionListSelected.push(item);
         }
-
       }
     });
   }

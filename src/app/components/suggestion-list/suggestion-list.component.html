@@ -1,9 +1,89 @@
 <div class="list-group">
+  <div class="sort">
+    Sort items:
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="sortByDate(true)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-down-short"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"
+        />
+      </svg>
+      date
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="sortByDate(false)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-up-short"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"
+        /></svg
+      >date
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm"
+      (click)="sortByName(true)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-down-short"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"
+        /></svg
+      >title
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm"
+      (click)="sortByName(false)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-arrow-up-short"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"
+        /></svg
+      >title
+    </button>
+  </div>
   <div *ngFor="let suggest of suggestionList">
     <div class="list-group-item list-group-item-action">
       <div class="d-flex w-100 justify-content-between">
         <h3 class="mb-1 font-weight-bold">{{ suggest.calendarEvent.title }}</h3>
-        <small>{{ suggest.calendarEvent.start | date:'medium' }}</small>
+        <small>{{ suggest.calendarEvent.start | date: "medium" }}</small>
       </div>
       <p class="mb-1">
         <a href="{{ suggest.link }}">{{ suggest.link }}</a>
@@ -12,7 +92,8 @@
       <button
         type="button"
         class="btn btn-primary btn-sm float-right"
-        (click)="handleClick(suggest)">
+        (click)="handleClick(suggest)"
+      >
         Add to calendar
       </button>
     </div>

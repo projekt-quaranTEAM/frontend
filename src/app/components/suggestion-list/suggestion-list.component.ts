@@ -14,17 +14,38 @@ export class SuggestionListComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private plannerService: PlannerService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   handleClick(propositon: Proposition): void {
-    this.toastr.success(
-      propositon.calendarEvent.title,
-      'Added to calendar'
+    this.toastr.success(propositon.calendarEvent.title, 'Added to calendar');
+    this.plannerService.saveProposition(propositon).subscribe();
+  }
+
+  sortByName(dir: boolean): void {
+    const suggestionListCopy = [...this.suggestionList];
+    suggestionListCopy.sort((a, b) =>
+      a.calendarEvent.title > b.calendarEvent.title ? 1 : -1
     );
-    this.plannerService
-      .saveProposition(propositon)
-      .subscribe();
+    if (dir === true) {
+      this.suggestionList = suggestionListCopy;
+    } else {
+      suggestionListCopy.reverse();
+      this.suggestionList = suggestionListCopy;
+    }
+  }
+
+  sortByDate(dir: boolean): void {
+    const suggestionListCopy = [...this.suggestionList];
+    suggestionListCopy.sort((a, b) =>
+      a.calendarEvent.start > b.calendarEvent.start ? 1 : -1
+    );
+    if (dir === true) {
+      this.suggestionList = suggestionListCopy;
+    } else {
+      suggestionListCopy.reverse();
+      this.suggestionList = suggestionListCopy;
+    }
   }
 }
