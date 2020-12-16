@@ -24,6 +24,7 @@ import {
 import flatpickr from 'flatpickr';
 import { PlannerService } from 'src/app/services/planner.service';
 import { EventObj } from '../../models/EventObj';
+import { ToastrService } from 'ngx-toastr';
 
 flatpickr.l10ns.default.firstDayOfWeek = 1;
 
@@ -73,7 +74,7 @@ export class CalendarComponent implements OnInit {
         this.clickedEdit = true;
         this.oldEvent = { ...event };
         this.tempEvent = event;
-        console.log(event)
+        console.log(event);
       },
     },
   ];
@@ -96,8 +97,9 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private modal: NgbModal,
-    private plannerService: PlannerService
-  ) { }
+    private plannerService: PlannerService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.updateEventsList();
@@ -114,7 +116,9 @@ export class CalendarComponent implements OnInit {
           // tslint:disable-next-line:prefer-const
           let eventItem = this.events[item];
 
-          eventItem.calendarEvent.start = new Date(eventItem.calendarEvent.start);
+          eventItem.calendarEvent.start = new Date(
+            eventItem.calendarEvent.start
+          );
           eventItem.calendarEvent.end = new Date(eventItem.calendarEvent.end);
           eventItem.calendarEvent.actions = this.actions;
 
@@ -124,7 +128,6 @@ export class CalendarComponent implements OnInit {
       this.refresh.next();
     });
   }
-
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     this.tempEvent = null;
@@ -166,26 +169,34 @@ export class CalendarComponent implements OnInit {
   }
 
   showEvent(action: string, event: CalendarEvent): void {
-    const link = this.events.filter(e => e.calendarEvent.id == event.id)[0].link;
+    const link = this.events.filter((e) => e.calendarEvent.id == event.id)[0]
+      .link;
     this.modalData = { event, action, link };
     this.modal.open(this.eventView, { size: 'lg' });
   }
   addEvent(): void {
-
     this.eventObjToSend = {
       id: 1,
       calendarEvent: this.tempEvent,
       userID: 1,
-      link: "",
+      link: '',
     };
 
     if (this.clickedEdit === false) {
       this.plannerService.saveEvent(this.eventObjToSend).subscribe(() => {
         this.updateEventsList();
+        this.toastr.success(
+          this.eventObjToSend.calendarEvent.title,
+          'Added to calendar'
+        );
       });
     } else {
       this.plannerService.updateEvent(this.eventObjToSend).subscribe(() => {
         this.updateEventsList();
+        this.toastr.success(
+          this.eventObjToSend.calendarEvent.title,
+          'Added to calendar'
+        );
       });
     }
     this.tempEvent = null;
@@ -201,7 +212,7 @@ export class CalendarComponent implements OnInit {
       end: endOfDay(new Date()),
       color: colors.red,
       actions: this.actions,
-    }
+    };
   }
 
   cancelEdit(): void {
@@ -216,11 +227,10 @@ export class CalendarComponent implements OnInit {
     );
     this.plannerService.deleteEvent(eventToDelete).subscribe(() => {
       this.updateEventsList();
+      this.toastr.success(eventToDelete.title, 'Deleted');
     });
 
     this.tempEvent = null;
     this.clickedEdit = false;
-
   }
-
 }
