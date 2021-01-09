@@ -23,6 +23,20 @@
     ></ng-template>
   </li>
   <li ngbNavItem>
+    <a ngbNavLink>Cooking</a>
+    <ng-template ngbNavContent
+      ><app-suggestion-list [suggestionList]="suggestionListCooking">
+      </app-suggestion-list
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Meeting</a>
+    <ng-template ngbNavContent
+      ><app-suggestion-list [suggestionList]="suggestionListMeeting">
+      </app-suggestion-list
+    ></ng-template>
+  </li>
+  <li ngbNavItem>
     <a ngbNavLink>Selected for You</a>
     <ng-template ngbNavContent
       ><app-suggestion-list [suggestionList]="suggestionListSelected">

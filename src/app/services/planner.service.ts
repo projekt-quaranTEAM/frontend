@@ -12,17 +12,16 @@ import { LocalStorageService } from './local-storage.service';
 })
 export class PlannerService {
   private url = 'http://localhost:8080/';
-  private currentUserId = this.localStorage.getUserIdFromLocalStorage();
 
   constructor(private httpClient: HttpClient,
-              private localStorage: LocalStorageService) { }
+    private localStorage: LocalStorageService) { }
 
   public getEvents() {
-    return this.httpClient.get<EventObj[]>(this.url + this.currentUserId + '/events');
+    return this.httpClient.get<EventObj[]>(this.url + this.localStorage.getUserIdFromLocalStorage() + '/events');
   }
 
   public getSpecifiedEvent(id: number) {
-    return this.httpClient.get<EventObj>(this.url + this.currentUserId + '/event/' + id);
+    return this.httpClient.get<EventObj>(this.url + this.localStorage.getUserIdFromLocalStorage() + '/event/' + id);
   }
 
   public saveEvent(body: EventObj) {
@@ -31,7 +30,7 @@ export class PlannerService {
         'Content-Type': 'application/json',
       }),
     };
-    return this.httpClient.post(this.url + this.currentUserId + '/event', body, httpOptions);
+    return this.httpClient.post(this.url + this.localStorage.getUserIdFromLocalStorage() + '/event', body, httpOptions);
   }
 
   public saveProposition(body: Proposition) {
@@ -40,7 +39,7 @@ export class PlannerService {
         'Content-Type': 'application/json',
       }),
     };
-    return this.httpClient.post(this.url + this.currentUserId + '/event', body, httpOptions);
+    return this.httpClient.post(this.url + this.localStorage.getUserIdFromLocalStorage() + '/event', body, httpOptions);
   }
 
   public updateEvent(body: EventObj) {
@@ -50,7 +49,7 @@ export class PlannerService {
       }),
     };
     return this.httpClient
-      .put(this.url + this.currentUserId + '/event/' + body.calendarEvent.id, body, httpOptions);
+      .put(this.url + this.localStorage.getUserIdFromLocalStorage() + '/event/' + body.calendarEvent.id, body, httpOptions);
   }
 
   public deleteEvent(event: CalendarEvent) {
@@ -59,7 +58,7 @@ export class PlannerService {
         'Content-Type': 'application/json',
       }),
     };
-    return this.httpClient.delete(this.url + this.currentUserId + '/event/' + event.id, httpOptions);
+    return this.httpClient.delete(this.url + this.localStorage.getUserIdFromLocalStorage() + '/event/' + event.id, httpOptions);
   }
 
   public getPropositions() {
@@ -69,7 +68,7 @@ export class PlannerService {
       'Access-Control-Allow-Methods',
       'GET, POST, PUT, DELETE, OPTIONS'
     );
-    return this.httpClient.get<Proposition[]>(this.url + this.currentUserId + '/proposition', {
+    return this.httpClient.get<Proposition[]>(this.url + this.localStorage.getUserIdFromLocalStorage() + '/proposition', {
       headers: headersObject,
     });
   }

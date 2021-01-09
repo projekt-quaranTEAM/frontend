@@ -10,9 +10,11 @@ export class SuggestionsComponent implements OnInit {
   suggestionListSport: any[] = [];
   suggestionListMusic: any[] = [];
   suggestionListGames: any[] = [];
+  suggestionListCooking: any[] = [];
+  suggestionListMeeting: any[] = [];
   suggestionListSelected: any[] = [];
 
-  constructor(private plannerService: PlannerService) {}
+  constructor(private plannerService: PlannerService) { }
 
   ngOnInit(): void {
     this.plannerService.getPropositions().subscribe((data) => {
@@ -24,6 +26,12 @@ export class SuggestionsComponent implements OnInit {
       );
       this.suggestionListGames = data.filter(
         (item) => item.category === 'games'
+      );
+      this.suggestionListCooking = data.filter(
+        (item) => item.category === 'cooking'
+      );
+      this.suggestionListMeeting = data.filter(
+        (item) => item.category === 'meeting'
       );
 
       var c = 0;
