@@ -12,12 +12,16 @@ import { CalendarHeaderModule } from '../angular-calendar-demos/calendar-header/
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModalModule, NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { SuggestionListComponent } from './components/suggestion-list/suggestion-list.component';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LocalStorageService } from './services/local-storage.service';
+import { StorageServiceModule } from 'ngx-webstorage-service';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,8 @@ import { ToastrModule } from 'ngx-toastr';
     NavBarComponent,
     SuggestionsComponent,
     SuggestionListComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     HttpClientModule,
@@ -44,8 +50,10 @@ import { ToastrModule } from 'ngx-toastr';
     FlatpickrModule.forRoot(),
     NgbModule,
     ToastrModule.forRoot(),
+    ReactiveFormsModule,
+    StorageServiceModule,
   ],
-  providers: [],
+  providers: [LocalStorageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
