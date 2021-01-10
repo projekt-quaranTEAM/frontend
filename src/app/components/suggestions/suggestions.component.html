@@ -1,39 +1,11 @@
 <p>Find activities for you</p>
 
 <ul ngbNav #nav="ngbNav" class="nav-tabs">
-  <li ngbNavItem>
-    <a ngbNavLink>Sport</a>
+  <li ngbNavItem *ngFor="let category of suggestionMap | keyvalue;">
+    <a ngbNavLink>{{category.key | titlecase}}</a>
     <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListSport"
+      ><app-suggestion-list [suggestionList]="category.value"
       ></app-suggestion-list
-    ></ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Games</a>
-    <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListGames">
-      </app-suggestion-list
-    ></ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Music</a>
-    <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListMusic">
-      </app-suggestion-list
-    ></ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Cooking</a>
-    <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListCooking">
-      </app-suggestion-list
-    ></ng-template>
-  </li>
-  <li ngbNavItem>
-    <a ngbNavLink>Meeting</a>
-    <ng-template ngbNavContent
-      ><app-suggestion-list [suggestionList]="suggestionListMeeting">
-      </app-suggestion-list
     ></ng-template>
   </li>
   <li ngbNavItem>

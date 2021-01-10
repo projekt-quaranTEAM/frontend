@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
 
+  categories = ['Sport', 'Games', 'Music', 'Cooking', 'Meeting', 'Movies', 'Art', 'Housework', 'Programming', 'Garden', 'DIY', 'IT', 'Pets', 'Medical', 'Courses', 'Politics', 'Mechanics']
+
   constructor(
     private formBuilder: FormBuilder,
     private plannerService: PlannerService,
