@@ -45,14 +45,57 @@
                   formControlName="email"
                 />
               </div>
-              <h3 class="text-center text-info">Survey</h3>
-              <div class="form-group">
-                <label class="text-info">Select the categories that interest you:</label><br />
-                <div class="form-check form-check-inline" *ngFor="let category of categories; index as i;" >
-                  <input class="form-check-input big-checkbox" type="checkbox" id="inlineCheckbox{{i}}" value="option{{i}}">
-                  <label class="form-check-label" style="width: 79px" for="inlineCheckbox{{i}}">{{category}}</label>
+              <!-- Survery -->
+                <h3 class="text-center text-info">Survey</h3>
+                <div class="form-group">
+                  <label class="text-info">Select the categories that interest you:</label><br />
+                  <div class="form-check form-check-inline" *ngFor="let category of categories; index as i;" >
+                    <input class="form-check-input big-checkbox" type="checkbox" value="{{category}}" (change)="onCheckChange($event)" id="inlineCheckbox{{i}}">
+                    <label class="form-check-label" style="width: 79px" for="inlineCheckbox{{i}}">{{category}}</label>
+                  </div>
                 </div>
-              </div>            
+                <div class="form-group">
+                  <label class="text-info">Do you prefer to spend your time actively or passively?</label><br />
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio1" value="Actively" formControlName="question1">
+                    <label class="form-check-label" for="inlineRadio1">Actively</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio2" value="Passively" formControlName="question1">
+                    <label class="form-check-label" for="inlineRadio2">Passively</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="text-info">Are you more interested in reading books or play games?</label><br />
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio3" value="Books" formControlName="question2">
+                    <label class="form-check-label" for="inlineRadio3">Books</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio4" value="Games" formControlName="question2">
+                    <label class="form-check-label" for="inlineRadio4">Games</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="text-info">Choose one category that is most relevant to you:</label><br />
+                  <select id="inputState" class="form-control" formControlName="question3">
+                    <option>Education</option>
+                    <option>Health</option>
+                    <option>Housework</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="text-info">Are you interested in social life?</label><br/>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio5" value="Yes" formControlName="question4">
+                    <label class="form-check-label" for="inlineRadio5">Yes</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input big-checkbox" type="radio" id="inlineRadio6" value="No" formControlName="question4">
+                    <label class="form-check-label" for="inlineRadio6">No</label>
+                  </div>
+                </div>
+              <!-- Survery END-->  
               <div class="form-group">
                 <br />
                 <button
