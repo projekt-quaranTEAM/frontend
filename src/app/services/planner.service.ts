@@ -82,6 +82,15 @@ export class PlannerService {
     return this.httpClient.post(this.url + 'register', body, httpOptions);
   }
 
+  public sendSurvey(body: Object) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.httpClient.post(this.url + 'register/survey', body, httpOptions);
+  }
+
   public loginUser(body: User) {
     const httpOptions = {
       headers: new HttpHeaders({

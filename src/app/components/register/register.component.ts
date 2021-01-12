@@ -56,12 +56,14 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void { }
 
   onSubmit(): void {
-    this.checkSurvey();
 
     if (this.registerForm.invalid) {
       this.toastr.error("Enter the data correctly", "Registration failed")
       return;
     }
+    this.checkSurvey();
+
+    this.categoriesMap['email'] = this.registerForm.value.email;
 
     const userToSave = new User();
     userToSave.name = this.registerForm.value.name;
@@ -79,11 +81,16 @@ export class RegisterComponent implements OnInit {
         }
       },
       () => {
+        this.plannerService.sendSurvey(this.categoriesMap).subscribe(data => console.log(data),
+          err => {
+            this.toastr.error("The survey was not sent correctly", "Survey failed");
+          })
         this.toastr.success("Registration was successful", "Registration");
         this.router.navigate(['login']);
       }
     );
   }
+
   checkSurvey(): void {
     const categories = ['art', 'auto', 'books', 'charity', 'community', 'cooking', 'family', 'fashion', 'games', 'health', 'holiday', 'housework', 'meeting', 'movies', 'music', 'sport', 'travel']
     categories.forEach(cat => {
@@ -103,8 +110,6 @@ export class RegisterComponent implements OnInit {
 
     if (this.registerForm.value.question4 == 'Yes') this.addPoints(['travel', 'community', 'books', 'holiday', 'family'], 1)
     else this.addPoints(['movies', 'games', 'housework', 'auto'], 1)
-
-    console.log(this.categoriesMap)
 
   }
   addPoints(categories, point): void {
